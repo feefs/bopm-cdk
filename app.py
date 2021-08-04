@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-from aws_cdk import (
-    aws_lambda,
-    aws_lambda_python,
-    aws_apigateway,
-    core
-)
+from aws_cdk import aws_apigateway, aws_lambda, aws_lambda_python, core
 
 
 class BopmCdkStack(core.Stack):
@@ -26,9 +21,14 @@ class BopmCdkStack(core.Stack):
         api = aws_apigateway.LambdaRestApi(
             self,
             id='lambda-apigateway',
-            handler=bopm_lambda
+            handler=bopm_lambda,
+            proxy=False
         )
 
+        bopm = api.root.add_resource('bopm')
+        bopm.add_method('PUT')
+
+
 app = core.App()
-BopmCdkStack(app, "BopmCdkStack")
+BopmCdkStack(app, 'BopmCdkStack')
 app.synth()

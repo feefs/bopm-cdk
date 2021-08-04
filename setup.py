@@ -1,6 +1,5 @@
 import setuptools
 
-
 with open("README.md") as fp:
     long_description = fp.read()
 
@@ -22,7 +21,9 @@ setuptools.setup(
         "aws-cdk.core==1.116.0",
         "aws-cdk.aws_lambda",
         "aws-cdk.aws_lambda_python",
-        "aws-cdk.aws_apigateway"
+        "aws-cdk.aws_apigateway",
+        "pylint",
+        "isort"
     ],
 
     python_requires=">=3.6",
