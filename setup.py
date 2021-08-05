@@ -22,6 +22,7 @@ setuptools.setup(
         "aws-cdk.aws_lambda",
         "aws-cdk.aws_lambda_python",
         "aws-cdk.aws_apigateway",
+        "aws_cdk.aws_iam",
         "pylint",
         "isort"
     ],

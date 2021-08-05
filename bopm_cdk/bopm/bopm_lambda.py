@@ -27,7 +27,7 @@ def handler(event, context):
         body['strike'],
         risk_free_interest_rate,
         proportional_volatility,
-        body['option_type']
+        body['type']
     )
 
     american_coords, european_coords = generate_coordinates(american, delta_t), generate_coordinates(european, delta_t)
@@ -122,5 +122,6 @@ def risk_free_rate(t):
         rates = np.array([0] + [float(cells[n].get_text()) for n in range(1, 12)]) / 100
 
         return float(interp1d(years, rates)(t))
-    except Exception:
+    except Exception as e:
+        print(e)
         return 0.02

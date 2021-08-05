@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from aws_cdk import aws_apigateway, aws_lambda, aws_lambda_python, core
+from aws_cdk import aws_apigateway, aws_iam, aws_lambda, aws_lambda_python, core
 
 
 class BopmCdkStack(core.Stack):
@@ -18,11 +18,23 @@ class BopmCdkStack(core.Stack):
             index='bopm_lambda.py'
         )
 
+        github_pages_ips = ['185.199.108.153', '185.199.109.153', '185.199.110.153', '185.199.111.153']
+
         api = aws_apigateway.LambdaRestApi(
             self,
             id='lambda-apigateway',
             handler=bopm_lambda,
-            proxy=False
+            proxy=False,
+            policy=aws_iam.PolicyDocument(
+                statements=[
+                    aws_iam.PolicyStatement(
+                        effect=aws_iam.Effect.DENY,
+                        principals=[aws_iam.AnyPrincipal()],
+                        actions=['execute-api:Invoke'],
+                        conditions={'NotIpAddress': {'aws:SourceIp': github_pages_ips}},
+                    )
+                ]
+            )
         )
 
         bopm = api.root.add_resource('bopm')
