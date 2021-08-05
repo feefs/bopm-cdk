@@ -1,7 +1,6 @@
 import json
 
 import numpy as np
-import pandas as pd
 import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
@@ -12,13 +11,45 @@ TREE_DEPTH = 50
 def handler(event, context):
     body = json.loads(event['body'])
 
-    time_in_years = body['days'] / 365
+    if body['days'] <= 0:
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            'body': 'Invalid number of days'
+        }
+
+    if body['strike'] <= 0:
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            'body': 'Invalid strike price'
+        }
+
+    print(f"Fetching price information for {body['ticker']}")
     stock = yf.Ticker(body['ticker'])
-    price = stock.history(period='1d')['Close'][0]
+    day_history = stock.history(period='1d')
+
+    if len(day_history) == 0:
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            'body': 'Invalid ticker'
+        }
+    price = day_history['Close'][0]
+
+    time_in_years = body['days'] / 365
+    print(f'Calculating risk free interest rate for {time_in_years} years')
     risk_free_interest_rate = risk_free_rate(time_in_years)
-    history = stock.history(period='1y')
-    percent_changes = (history['Open'] / history['Close'] - 1)
-    proportional_volatility = percent_changes.std() * np.sqrt(time_in_years * 253)
+
+    print('Calculating exponentially weighted moving average volatility')
+    year_history = stock.history(period='1y')
+    ewm_volatility = np.log(year_history['Close'] / year_history['Close'].shift(1)).dropna().ewm(span=252).std()[-1]
 
     american, european, delta_t = bopm(
         time_in_years,
@@ -26,7 +57,7 @@ def handler(event, context):
         price,
         body['strike'],
         risk_free_interest_rate,
-        proportional_volatility,
+        ewm_volatility,
         body['type']
     )
 
@@ -38,8 +69,6 @@ def handler(event, context):
             'Content-Type': 'application/json'
         },
         'body': json.dumps({
-            'response': 'Success!',
-            'method': event['httpMethod'],
             'american_points': american_coords.tolist(),
             'european_points': european_coords.tolist(),
         })

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-from aws_cdk import aws_apigateway, aws_iam, aws_lambda, aws_lambda_python, core
+from aws_cdk import (aws_apigateway, aws_iam, aws_lambda, aws_lambda_python,
+                     core)
 
 
 class BopmCdkStack(core.Stack):
