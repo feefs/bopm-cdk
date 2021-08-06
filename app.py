@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-from aws_cdk import (aws_apigateway, aws_iam, aws_lambda, aws_lambda_python,
-                     core)
+from aws_cdk import aws_apigateway, aws_lambda, aws_lambda_python, core
 
 
 class BopmCdkStack(core.Stack):
@@ -19,27 +18,37 @@ class BopmCdkStack(core.Stack):
             index='bopm_lambda.py'
         )
 
-        github_pages_ips = ['185.199.108.153', '185.199.109.153', '185.199.110.153', '185.199.111.153']
-
-        api = aws_apigateway.LambdaRestApi(
-            self,
-            id='lambda-apigateway',
-            handler=bopm_lambda,
+        integration = aws_apigateway.LambdaIntegration(
+            bopm_lambda,
             proxy=False,
-            policy=aws_iam.PolicyDocument(
-                statements=[
-                    aws_iam.PolicyStatement(
-                        effect=aws_iam.Effect.DENY,
-                        principals=[aws_iam.AnyPrincipal()],
-                        actions=['execute-api:Invoke'],
-                        conditions={'NotIpAddress': {'aws:SourceIp': github_pages_ips}},
-                    )
-                ]
+            integration_responses=[
+                aws_apigateway.IntegrationResponse(
+                    status_code='200',
+                    response_parameters={'method.response.header.Access-Control-Allow-Origin': "'*'"}
+                )
+            ]
+        )
+
+        api = aws_apigateway.RestApi(self, id='BopmApiGateway')
+
+        bopm = api.root.add_resource(
+            path_part='bopm',
+            default_cors_preflight_options=aws_apigateway.CorsOptions(
+                allow_origins=aws_apigateway.Cors.ALL_ORIGINS,
+                allow_methods=['OPTIONS', 'POST']
             )
         )
 
-        bopm = api.root.add_resource('bopm')
-        bopm.add_method('PUT')
+        bopm.add_method(
+            http_method='POST',
+            integration=integration,
+            method_responses=[
+                aws_apigateway.MethodResponse(
+                    status_code='200',
+                    response_parameters={'method.response.header.Access-Control-Allow-Origin': True}
+                )
+            ]
+        )
 
 
 app = core.App()

@@ -9,9 +9,9 @@ from scipy.interpolate import interp1d
 TREE_DEPTH = 50
 
 def handler(event, context):
-    body = json.loads(event['body'])
+    body = event
 
-    if body['days'] <= 0:
+    if float(body['days']) <= 0:
         return {
             'statusCode': 500,
             'headers': {
@@ -20,7 +20,7 @@ def handler(event, context):
             'body': 'Invalid number of days'
         }
 
-    if body['strike'] <= 0:
+    if float(body['strike']) <= 0:
         return {
             'statusCode': 500,
             'headers': {
@@ -43,7 +43,7 @@ def handler(event, context):
         }
     price = day_history['Close'][0]
 
-    time_in_years = body['days'] / 365
+    time_in_years = float(body['days']) / 365
     print(f'Calculating risk free interest rate for {time_in_years} years')
     risk_free_interest_rate = risk_free_rate(time_in_years)
 
@@ -55,10 +55,10 @@ def handler(event, context):
         time_in_years,
         TREE_DEPTH,
         price,
-        body['strike'],
+        float(body['strike']),
         risk_free_interest_rate,
         ewm_volatility,
-        body['type']
+        'C' if body['type'].lower() in ['call', 'c'] else 'P'
     )
 
     american_coords, european_coords = generate_coordinates(american, delta_t), generate_coordinates(european, delta_t)
@@ -69,6 +69,7 @@ def handler(event, context):
             'Content-Type': 'application/json'
         },
         'body': json.dumps({
+            'ewm_volatility': ewm_volatility,
             'american_points': american_coords.tolist(),
             'european_points': european_coords.tolist(),
         })
