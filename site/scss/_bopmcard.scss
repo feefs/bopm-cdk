@@ -1,0 +1,124 @@
+@keyframes showCard {
+	0% { transform: translate(0, -5%);
+		opacity: 0; }
+
+	15%, 100% { transform: translate(0, 0);
+		opacity: 1; }
+}
+
+#bopmcard {
+	background: linear-gradient(45deg, $nord1, $nord0, $nord0, $nord1);
+	height: 500px;
+	opacity: 0;
+	animation: showCard 2s;
+	animation-delay: 0.5s;
+	animation-fill-mode: forwards;
+	transform: translate(0, -5%);
+
+	#github-icon {
+		position: absolute;
+		margin: auto;
+		top: 30px;
+		left: 30px;
+		filter: invert(94%) sepia(3%) saturate(945%) hue-rotate(187deg) brightness(60%) contrast(89%);
+		transition: filter 0.2s ease-out;
+
+		&:hover {
+			filter: invert(97%) sepia(2%) saturate(533%) hue-rotate(184deg) brightness(97%) contrast(97%);
+		}
+	}
+
+	#parameters {
+		position: absolute;
+		margin: auto;
+		width: 200px;
+		height: 300px;
+		top: 80px;
+		left: 75px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.form-input {
+			position: relative;
+			width: 200px;
+			font-family: inherit;
+			border: 0;
+			outline: 0;
+			border-bottom: 1px solid $nord9;
+			margin-bottom: 10px;
+			font-size: 18pt;
+			color: $nord4;
+			padding: 7px 0;
+			background: transparent;
+		}
+
+		.form-input.invalid {
+			color: $nord11;
+		}
+
+		.submit-button {
+			font-family: inherit;
+			font-size: 2.5vmin;
+			box-shadow: 0 0.5vmin 0 $nord3,
+				0 1vmin 1vmin rgba(0, 0, 0, 0.35);
+			border: unset;
+			border-radius: 15px;
+			background: $nord2;
+			width: 200px;
+			height: 50px;
+			font-size: 17pt;
+			color: $nord6;
+			transition: 0.05s;
+			transform: translate(0, 2vmin);
+
+			&:active {
+				box-shadow: 0 0.1vmin 0 $nord3,
+					0 0.5vmin 0.5vmin rgba(0, 0, 0, 0.35);
+				transform: translate(0, 2vmin + 0.5vmin);
+				transition: 0.05s;
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		.submit-button.disabled {
+			color: $nord3;
+			text-decoration: line-through;
+
+			&:active {
+				box-shadow: 0 0.5vmin 0 $nord3,
+					0 1vmin 1vmin rgba(0, 0, 0, 0.35);
+				transform: translate(0, 2vmin);
+				transition: unset;
+			}
+
+			&:hover {
+				cursor: not-allowed;
+			}
+		}
+	}
+
+	#plot {
+		position: absolute;
+		margin: auto;
+		width: 400px;
+		height: 300px;
+		top: 25px;
+		right: 50px;
+	}
+
+	#stats {
+		position: absolute;
+		margin: auto;
+		width: 400px;
+		height: 125px;
+		top: 335px;
+		right: 50px;
+		text-align: center;
+		font-size: 16pt;
+		line-height: 22pt;
+	}
+}

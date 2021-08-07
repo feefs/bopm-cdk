@@ -1,0 +1,17 @@
+$gap: 30px;
+$desktop: 800px;
+
+.card {
+	box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.4);
+	border-radius: 15px;
+
+	position: relative;
+	margin: auto;
+	margin-top: $gap;
+	width: 90%;
+	max-width: 800px;
+
+	@media screen and (min-width: $desktop) {
+		margin-top: $gap + 20px;
+	}
+}
