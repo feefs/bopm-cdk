@@ -6,40 +6,20 @@ import yfinance as yf
 from bs4 import BeautifulSoup
 from scipy.interpolate import interp1d
 
-TREE_DEPTH = 50
 
 def handler(event, context):
     body = event
 
-    if float(body['days']) <= 0:
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': 'Invalid number of days'
-        }
-
-    if float(body['strike']) <= 0:
-        return {
-            'statusCode': 500,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': 'Invalid strike price'
-        }
-
     print(f"Fetching price information for {body['ticker']}")
     stock = yf.Ticker(body['ticker'])
     day_history = stock.history(period='1d')
-
     if len(day_history) == 0:
         return {
             'statusCode': 500,
             'headers': {
                 'Content-Type': 'application/json'
             },
-            'body': 'Invalid ticker'
+            'body': json.dumps({'error': 'Invalid ticker'})
         }
     price = day_history['Close'][0]
 
@@ -51,9 +31,9 @@ def handler(event, context):
     year_history = stock.history(period='1y')
     ewm_volatility = np.log(year_history['Close'] / year_history['Close'].shift(1)).dropna().ewm(span=252).std()[-1]
 
-    american, european, delta_t = bopm(
+    american, _, delta_t = bopm(
         time_in_years,
-        TREE_DEPTH,
+        int(body['depth']),
         price,
         float(body['strike']),
         risk_free_interest_rate,
@@ -61,7 +41,7 @@ def handler(event, context):
         'C' if body['type'].lower() in ['call', 'c'] else 'P'
     )
 
-    american_coords, european_coords = generate_coordinates(american, delta_t), generate_coordinates(european, delta_t)
+    american_coords = generate_coordinates(american, delta_t)
 
     return {
         'statusCode': 200,
@@ -69,9 +49,12 @@ def handler(event, context):
             'Content-Type': 'application/json'
         },
         'body': json.dumps({
+            'depth': body['depth'],
+            'price': price,
+            'risk_free_rate': risk_free_interest_rate,
+            'ticker': body['ticker'].upper(),
             'ewm_volatility': ewm_volatility,
-            'american_points': american_coords.tolist(),
-            'european_points': european_coords.tolist(),
+            'points': american_coords.tolist(),
         })
     }
 
