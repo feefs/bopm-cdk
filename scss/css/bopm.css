@@ -1,0 +1,188 @@
+.card {
+  -webkit-box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  position: relative;
+  margin: auto;
+  margin-top: 30px;
+  width: 90%;
+  max-width: 800px;
+}
+
+@media screen and (min-width: 800px) {
+  .card {
+    margin-top: 50px;
+  }
+}
+
+@-webkit-keyframes showCard {
+  0% {
+    -webkit-transform: translate(0, -5%);
+            transform: translate(0, -5%);
+    opacity: 0;
+  }
+  15%, 100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes showCard {
+  0% {
+    -webkit-transform: translate(0, -5%);
+            transform: translate(0, -5%);
+    opacity: 0;
+  }
+  15%, 100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+#bopmcard {
+  background: linear-gradient(45deg, #3b4252, #2e3440, #2e3440, #3b4252);
+  height: 500px;
+  opacity: 0;
+  -webkit-animation: showCard 2s;
+          animation: showCard 2s;
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-transform: translate(0, -5%);
+          transform: translate(0, -5%);
+}
+
+#bopmcard #github-icon {
+  position: absolute;
+  margin: auto;
+  top: 30px;
+  left: 30px;
+  -webkit-filter: invert(94%) sepia(3%) saturate(945%) hue-rotate(187deg) brightness(60%) contrast(89%);
+          filter: invert(94%) sepia(3%) saturate(945%) hue-rotate(187deg) brightness(60%) contrast(89%);
+  -webkit-transition: -webkit-filter 0.2s ease-out;
+  transition: -webkit-filter 0.2s ease-out;
+  transition: filter 0.2s ease-out;
+  transition: filter 0.2s ease-out, -webkit-filter 0.2s ease-out;
+}
+
+#bopmcard #github-icon:hover {
+  -webkit-filter: invert(97%) sepia(2%) saturate(533%) hue-rotate(184deg) brightness(97%) contrast(97%);
+          filter: invert(97%) sepia(2%) saturate(533%) hue-rotate(184deg) brightness(97%) contrast(97%);
+}
+
+#bopmcard #parameters {
+  position: absolute;
+  margin: auto;
+  width: 200px;
+  height: 300px;
+  top: 80px;
+  left: 75px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#bopmcard #parameters .form-input {
+  position: relative;
+  width: 200px;
+  font-family: inherit;
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid #81a1c1;
+  margin-bottom: 10px;
+  font-size: 18pt;
+  color: #d8dee9;
+  padding: 7px 0;
+  background: transparent;
+}
+
+#bopmcard #parameters .form-input.invalid {
+  color: #bf616a;
+}
+
+#bopmcard #parameters .submit-button {
+  font-family: inherit;
+  font-size: 2.5vmin;
+  -webkit-box-shadow: 0 0.5vmin 0 #4c566a, 0 1vmin 1vmin rgba(0, 0, 0, 0.35);
+          box-shadow: 0 0.5vmin 0 #4c566a, 0 1vmin 1vmin rgba(0, 0, 0, 0.35);
+  border: unset;
+  border-radius: 15px;
+  background: #434c5e;
+  width: 200px;
+  height: 50px;
+  font-size: 17pt;
+  color: #eceff4;
+  -webkit-transition: 0.05s;
+  transition: 0.05s;
+  -webkit-transform: translate(0, 2vmin);
+          transform: translate(0, 2vmin);
+}
+
+#bopmcard #parameters .submit-button:active {
+  -webkit-box-shadow: 0 0.1vmin 0 #4c566a, 0 0.5vmin 0.5vmin rgba(0, 0, 0, 0.35);
+          box-shadow: 0 0.1vmin 0 #4c566a, 0 0.5vmin 0.5vmin rgba(0, 0, 0, 0.35);
+  -webkit-transform: translate(0, 2.5vmin);
+          transform: translate(0, 2.5vmin);
+  -webkit-transition: 0.05s;
+  transition: 0.05s;
+}
+
+#bopmcard #parameters .submit-button:hover {
+  cursor: pointer;
+}
+
+#bopmcard #parameters .submit-button.disabled {
+  color: #4c566a;
+  text-decoration: line-through;
+}
+
+#bopmcard #parameters .submit-button.disabled:active {
+  -webkit-box-shadow: 0 0.5vmin 0 #4c566a, 0 1vmin 1vmin rgba(0, 0, 0, 0.35);
+          box-shadow: 0 0.5vmin 0 #4c566a, 0 1vmin 1vmin rgba(0, 0, 0, 0.35);
+  -webkit-transform: translate(0, 2vmin);
+          transform: translate(0, 2vmin);
+  -webkit-transition: unset;
+  transition: unset;
+}
+
+#bopmcard #parameters .submit-button.disabled:hover {
+  cursor: not-allowed;
+}
+
+#bopmcard #plot {
+  position: absolute;
+  margin: auto;
+  width: 400px;
+  height: 300px;
+  top: 25px;
+  right: 50px;
+}
+
+#bopmcard #stats {
+  position: absolute;
+  margin: auto;
+  width: 400px;
+  height: 125px;
+  top: 335px;
+  right: 50px;
+  text-align: center;
+  font-size: 16pt;
+  line-height: 22pt;
+}
+
+body {
+  background: #2e3440;
+  color: #eceff4;
+  font-family: 'Raleway', sans-serif;
+}
+/*# sourceMappingURL=bopm.css.map */

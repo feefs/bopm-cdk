@@ -1,0 +1,9 @@
+{
+  "homepage": "https://feefs.me/bopm-cdk",
+  "scripts": {
+    "deploy": "gh-pages -d ./"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  }
+}

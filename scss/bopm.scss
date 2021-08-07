@@ -1,0 +1,9 @@
+@import './nord';
+@import './card';
+@import './bopmcard';
+
+body {
+	background: $nord0;
+	color: $nord6;
+	font-family: 'Raleway', sans-serif;
+}

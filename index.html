@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="./scss/css/bopm.css" />
+    <link rel="icon" href="bar-chart-line.svg">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>BOPM</title>
+</head>
+<body>
+    <div id="bopmcard" class="card">
+        <a href="https://github.com/feefs/bopm-cdk" target="_blank">
+            <img id="github-icon" src="github.svg" alt="Github" width ="30">
+        </a>
+        <div id="parameters">
+            <input type="text" class="form-input" oninput="checkInputValues()" id="form-ticker" placeholder="Ticker"><br>
+            <input type="text" class="form-input" oninput="checkInputValues()" id="form-days" placeholder="Days out (1-60)"><br>
+            <input type="text" class="form-input" oninput="checkInputValues()" id="form-strike" placeholder="Strike price"><br>
+            <input type="text" class="form-input" oninput="checkInputValues()" id="form-type" placeholder="Type (call/put)"><br>
+            <input type="text" class="form-input" oninput="checkInputValues()" id="form-depth" placeholder="Tree depth (1-200)"><br>
+            <button class="submit-button disabled" onclick="createPlot()" id="submit">Compute</button>
+        </div>
+        <div id="plot"></div>
+        <div id="stats"></div>
+    </div>
+    <script src="js/bopm.js"></script>
+</body>
+</html>
